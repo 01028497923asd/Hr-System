@@ -1,0 +1,80 @@
+﻿@model HumanResource.ViewModel.RoleClaimViewModel 
+
+<div class="main-content">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Zero configuration table -->
+            <section id="configuration">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap bar-success">
+                                    <h4 class="card-title">Add New Group </h4>
+                                </div>
+                            </div>
+
+                            <form method="post">
+                                <div class="card-body collapse show">
+
+                                    <div class="row">
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-sm-12 col-md-9">
+                                            <div id="DataTables_Table_0_filter"
+                                                 class="dataTables_filter">
+                                                <label>
+                                                    Group Name :<input type="text" asp-for="@Model.RoleName"
+                                                                       class="form-control form-control-sm" placeholder="Type Group Name her: " aria-controls="DataTables_Table_0" style="height: 58px;">
+                                                </label>
+                                                <span asp-validation-for="@Model.RoleName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <table class="table table-striped table-bordered zero-configuration mt-40 table-group">
+                                        <thead>
+                                            <tr>
+                                                <th>Module Name</th>
+                                                <th>Show </th>
+                                                <th>Add</th>
+                                                <th>Edit</th>
+                                                <th>delete</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @for (int i = 0; i < Model.Claims.Count; i++)
+                                            {
+                                                <tr>
+
+                                                    <td>
+                                                        @Model.Claims[i].CliamType
+                                                        <input type="hidden" asp-for="@Model.Claims[i].CliamType" />
+                                                    </td>
+                                                    <td>  <input class="form-check-input m-1" asp-for="@Model.Claims[i].Show"></td>
+                                                    <td>  <input class="form-check-input m-1" asp-for="@Model.Claims[i].Add"></td>
+                                                    <td>  <input class="form-check-input m-1" asp-for="@Model.Claims[i].Edit"></td>
+                                                    <td>  <input class="form-check-input m-1" asp-for="@Model.Claims[i].Delete"></td>
+
+                                                </tr>
+
+                                            }
+
+                                            </yr>
+                                        </tbody>
+
+                                    </table>
+                                    <button class="btn btn-primary" type="submit">Save</button>
+                                    <a class="btn btn-danger" type="button" asp-action="Permissions" asp-controller="Users">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    </section>
+    <div class="text-dark" asp-validation-summary="All"></div>
+</div>
+</div>
