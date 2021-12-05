@@ -1,10 +1,14 @@
 using HumanResource.Data;
 using HumanResource.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +42,37 @@ namespace HumanResource
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            //to change in Identity Tables
+            services.Configure<IdentityOptions>(option =>
+                              option.User.RequireUniqueEmail = true);
+
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                                 .RequireAuthenticatedUser()
+                                 .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+            services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme,
+             options =>
+             {
+
+
+                 options.LoginPath = "/Accounting/Login";
+                 options.LogoutPath = "/Accounting/Logout";
+                 options.AccessDeniedPath = "/Accounting/AccessDenied";
+                 options.SlidingExpiration = true;
+                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+
+             });
+            services.AddAuthorization();
+            services.AddAuthorizationCore(option =>
+            {
+                option.AddPolicy("PermissionsAdd",
+                     policy => policy.RequireClaim("PermissionsAdd"));
+
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +85,9 @@ namespace HumanResource
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }

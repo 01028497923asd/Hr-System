@@ -1,0 +1,43 @@
+﻿@model HumanResource.ViewModel.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+    <div class="form">
+        <div class="text-center">
+            <img src="~/img/logo.png">
+        </div>
+
+        <h2>Hr System Login  </h2>
+        <form asp-action="Login">
+            <div asp-validation-summary="All" class="text-white"></div>
+            <div class="inputBx">
+                <<input asp-for="Email" />
+                <span>Login</span>
+            </div>
+
+            <div class="inputBx password">
+                <input id="password-input" type="password" name="password" asp-for="Password">
+                <span>Password</span>
+                <a href="#" class="password-control" onclick="return show_hide_password(this);"></a>
+            </div>
+
+            <label class="remember">
+                <input type="checkbox" asp-for="RememberMe">
+                Remember
+            </label>
+            <div class="inputBx">
+                <input type="submit" value="Log in">
+            </div>
+        </form>
+        <p>Forgot password? <a href="#">Click Here</a></p>
+        
+    </div>
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

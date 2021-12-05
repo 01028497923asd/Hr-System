@@ -168,3 +168,7 @@ D:\Track\Sql Server\Project\HumanResource\HumanResource\bin\Debug\netcoreapp3.1\
 D:\Track\Sql Server\Project\HumanResource\HumanResource\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Users\TestUser.cshtml.g.cs
 D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Users\EditUser.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Shared\NotFound.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginLayout.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Accounting\Login.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Accounting\AccessDenied.cshtml.g.cs

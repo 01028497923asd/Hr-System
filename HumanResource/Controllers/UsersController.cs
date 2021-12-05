@@ -11,18 +11,22 @@ using System.Threading.Tasks;
 
 namespace HumanResource.Controllers
 {
+    //[Authorize(Roles="Admin,Super Admin")]
+   [Authorize]
     public class UsersController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         public UsersController(RoleManager<IdentityRole> roleManager,
-                             UserManager<ApplicationUser> userManager)
+                             UserManager<ApplicationUser> userManager,
+                             SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.signInManager = signInManager;
         }
-
-
+        
         public async Task<IActionResult> IndexAsync()
         {
             List<ListUserRolesViewModel> model = new List<ListUserRolesViewModel>();
@@ -57,6 +61,7 @@ namespace HumanResource.Controllers
         }
         
         [HttpGet]
+       
         public IActionResult AddNewGroup()
         {
             var model = new RoleClaimViewModel
@@ -147,7 +152,16 @@ namespace HumanResource.Controllers
 
             try
             {
-
+                var users =  userManager.Users.ToList();
+                for(int i = 0; i < users.Count; i++)
+                {
+                    if(await userManager.IsInRoleAsync(users[i], role.Name))
+                    {
+                        ViewBag.ErrorTitle = "Cannot Delete Role";
+                        ViewBag.ErrorMessage = $"There is {users[i].UserName} in Use";
+                        return View("Error");
+                    }
+                }
 
                 var result = await roleManager.DeleteAsync(role);
                 if (result.Succeeded)
@@ -324,7 +338,7 @@ namespace HumanResource.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.registerViewModel.Email,
+                    UserName = model.registerViewModel.UserName,
                     Email = model.registerViewModel.Email,
                     Name = model.registerViewModel.UserName
                 };
@@ -395,7 +409,7 @@ namespace HumanResource.Controllers
             }
             EditUserViewModel model = new EditUserViewModel
             {
-                UserName = user.Name,
+                UserName = user.UserName,
                 Email = user.Email,
                 UserId = user.Id,
                 RoleId = roleId,
@@ -416,7 +430,7 @@ namespace HumanResource.Controllers
                 {
                     return View("NotFound");
                 }
-                user.UserName = model.Email;
+                user.UserName = model.UserName;
                 user.Email = model.Email;
                 user.Name = model.UserName;
                 var result = await userManager.UpdateAsync(user);
@@ -476,6 +490,30 @@ namespace HumanResource.Controllers
             
   
         }
+        
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if(user == null)
+            {
+                ViewBag.ErrorMessage = "User Not Found";
+                return View("NotFound");
+            }
+            var result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Users");
+            }
+            foreach(var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+
+            }
+            return View("Index");
+        }
+        
+        
         [AcceptVerbs("Get", "Post")]
         [AllowAnonymous]
         public async Task<IActionResult> IsEmailInUse(string email)

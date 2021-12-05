@@ -5,126 +5,118 @@
     ViewData["Title"] = "List Roles";
 }
 
-<div class="main-content">
-    <div class="content-wrapper">
-        <div class="container-fluid">
-            <!-- Zero configuration table -->
-            <section id="configuration">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title-wrap bar-success">
-                                    <h4 class="card-title">Group Permissions</h4>
-                                </div>
-                            </div>
-                            <div class="card-body collapse show">
-                                <div class="card-block card-dashboard">
-                                    <p class="card-text">
-                                        DataTables has most features enabled by default,
-                                        so all you need to do to use it with your own ables is to call the construction
-                                    </p>
 
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-3">
-                                            <div class="dataTables_length" id="DataTables_Table_0_length">
-                                                <label>
-                                                    Show
-                                                    <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control form-control-sm">
-                                                        <option value="10">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">
-                                                            100
-                                                        </option>
-                                                    </select>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-sm-12 col-md-3">
-                                            <div id="DataTables_Table_0_filter"
-                                                 class="dataTables_filter">
-                                                <label>
-                                                    Search:<input type="search"
-                                                                  class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0">
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-1"></div>
-                                        <div class="col-lg-3">
-                                            <button id="addRow" class="btn btn-primary mb-2">
-                                                <i class="ft-plus"></i>&nbsp;
-                                                <a asp-action="AddNewGroup" asp-controller="Users">  Add new Group</a>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <table class="table table-striped table-bordered zero-configuration">
-                                        <thead>
-                                            <tr>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title-wrap bar-success">
+                    <h4 class="card-title">Group Permissions</h4>
+                </div>
+            </div>
+            <div class="card-body collapse show">
+                <div class="card-block card-dashboard">
+                    <p class="card-text">
+                        DataTables has most features enabled by default,
+                        so all you need to do to use it with your own ables is to call the construction
+                    </p>
 
-                                                <th>Name</th>
-
-                                                <th>Edit </th>
-                                                <th>Delete</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (Model.Any())
-                                            {
-                                                @foreach (var role in Model)
-                                                {
-                                                    <tr class="user">
-
-                                                        <td>@role.Name </td>
-
-                                                        <td>
-                                                            
-                                                            <a class="btn btn-success mb-2" asp-action="EditRole" asp-controller="Users" asp-route-roleId="@role.Id">  edit</a>
-                                                            
-                                                        </td>
-                                                        <td>
-                                                            <form method="post" asp-action="DeleteRole" asp-controller="Users" asp-route-roleId="@role.Id">
-                                                                <span id="ConfirmDeleteSpan_@role.Id" style="display:none">
-                                                                    <span>Are You sure You want to Delete</span>
-                                                                    <button type="submit" class="btn btn-danger mb-2">Yes</button>
-                                                                    <a href="#" class="btn btn-primary mb-2" onclick="ConfirmDelete('@role.Id',false)">No</a>
-                                                                </span>
-                                                                <span id="DeleteSpan_@role.Id">
-                                                                    <a href="#" class="btn btn-danger" onclick="ConfirmDelete('@role.Id',true)">Delete</a>
-                                                                </span>
-
-
-                                                            </form>
-
-                                                        </td>
-                                                    </tr>
-
-                                                }
-
-
-
-                                            }
-                                            else
-                                            {
-                                                <h3>There is not Any Roles Yet </h3>
-                                            }
-
-                                            </yr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-3">
+                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                <label>
+                                    Show
+                                    <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-control form-control-sm">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">
+                                            100
+                                        </option>
+                                    </select>
+                                </label>
                             </div>
                         </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-sm-12 col-md-3">
+                            <div id="DataTables_Table_0_filter"
+                                    class="dataTables_filter">
+                                <label>
+                                    Search:<input type="search"
+                                                    class="form-control form-control-sm" placeholder="" aria-controls="DataTables_Table_0">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                        <div class="col-lg-3">
+                            <button id="addRow" class="btn btn-primary mb-2">
+                                <i class="ft-plus"></i>&nbsp;
+                                <a asp-action="AddNewGroup" asp-controller="Users">  Add new Group</a>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </section>
+                    <table class="table table-striped table-bordered zero-configuration">
+                        <thead>
+                            <tr>
 
+                                <th>Name</th>
+
+                                <th>Edit </th>
+                                <th>Delete</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                @foreach (var role in Model)
+                                {
+                                    <tr class="user">
+
+                                        <td>@role.Name </td>
+
+                                        <td>
+                                                            
+                                            <a class="btn btn-success mb-2" asp-action="EditRole" asp-controller="Users" asp-route-roleId="@role.Id">  edit</a>
+                                                            
+                                        </td>
+                                        <td>
+                                            <form method="post" asp-action="DeleteRole" asp-controller="Users" asp-route-roleId="@role.Id">
+                                                <span id="ConfirmDeleteSpan_@role.Id" style="display:none">
+                                                    <span>Are You sure You want to Delete</span>
+                                                    <button type="submit" class="btn btn-danger mb-2">Yes</button>
+                                                    <a href="#" class="btn btn-primary mb-2" onclick="ConfirmDelete('@role.Id',false)">No</a>
+                                                </span>
+                                                <span id="DeleteSpan_@role.Id">
+                                                    <a href="#" class="btn btn-danger" onclick="ConfirmDelete('@role.Id',true)">Delete</a>
+                                                </span>
+
+
+                                            </form>
+
+                                        </td>
+                                    </tr>
+
+                                }
+
+
+
+                            }
+                            else
+                            {
+                                <h3>There is not Any Roles Yet </h3>
+                            }
+
+                            </yr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+       
 @section Scripts{
     <script src="~/js/site.js"></script>
 }
