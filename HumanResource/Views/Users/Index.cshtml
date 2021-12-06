@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model IEnumerable<HumanResource.ViewModel.ListUserRolesViewModel>
+@inject SignInManager<ApplicationUser> signInManager
 
 <div class="row">
     <div class="col-12">
@@ -73,7 +74,10 @@
                                     <td>
                                         <a class="btn btn-success mb-2" asp-action="EditUser" asp-controller="Users" asp-route-userId="@item.UserId">  edit</a>
                                     </td>
+
                                     <td>
+                                        @if(signInManager.IsSignedIn(User) && User.HasClaim("UsersDelete","true"))
+                                         {
                                         <form method="post" asp-action="DeleteUser" asp-controller="Users" asp-route-userId="@item.UserId">
                                             <span id="ConfirmDeleteSpan_@item.UserId" style="display:none">
                                                 <span>Are You sure You want to Delete</span>
@@ -86,6 +90,8 @@
 
 
                                         </form>
+                                           }
+                                        
                                     </td>
 
 

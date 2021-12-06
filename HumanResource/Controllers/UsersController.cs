@@ -26,7 +26,7 @@ namespace HumanResource.Controllers
             this.roleManager = roleManager;
             this.signInManager = signInManager;
         }
-        
+        [Authorize(Policy = "UsersShow")]
         public async Task<IActionResult> IndexAsync()
         {
             List<ListUserRolesViewModel> model = new List<ListUserRolesViewModel>();
@@ -54,6 +54,7 @@ namespace HumanResource.Controllers
         }
        
         [HttpGet]
+        [Authorize(Policy = "PermissionsShow")]
         public IActionResult Permissions()
         {
             var roles = roleManager.Roles;
@@ -61,7 +62,7 @@ namespace HumanResource.Controllers
         }
         
         [HttpGet]
-       
+        [Authorize(Policy = "PermissionsAdd")]
         public IActionResult AddNewGroup()
         {
             var model = new RoleClaimViewModel
@@ -84,6 +85,7 @@ namespace HumanResource.Controllers
         }
        
         [HttpPost]
+        [Authorize(Policy = "PermissionsAdd")]
         public async Task<IActionResult> AddNewGroup(RoleClaimViewModel model)
         {
             if (ModelState.IsValid)
@@ -141,6 +143,7 @@ namespace HumanResource.Controllers
         }
        
         [HttpPost]
+        [Authorize(Policy = "PermissionsDelete")]
         public async Task<IActionResult> DeleteRole(string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
@@ -189,6 +192,7 @@ namespace HumanResource.Controllers
         }
        
         [HttpGet]
+        [Authorize(Policy = "PermissionsEdit")]
         public async Task<IActionResult> EditRole(string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);
@@ -274,6 +278,7 @@ namespace HumanResource.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "PermissionsEdit")]
         public async Task<IActionResult> EditRole(EditRoleClaimViewModel model , string roleid)
         {
             var role = await roleManager.FindByIdAsync(roleid);
@@ -290,18 +295,35 @@ namespace HumanResource.Controllers
                 for (int i = 0; i < existClaims.Count; i++)
                 {
                     var testresult = await roleManager.RemoveClaimAsync(role, new Claim(existClaims[i].Type , existClaims[i].Value));
-                    //testresult = await roleManager.RemoveClaimAsync(role, new Claim(existClaims[i].Type + "", existClaims[i].Value));
-                    //testresult = await roleManager.RemoveClaimAsync(role, new Claim(existClaims[i].Type + "Show", existClaims[i].Value)); 
-                    //testresult = await roleManager.RemoveClaimAsync(role, new Claim(existClaims[i].Type + "Show", existClaims[i].Value));
                 }
                 for (int i = 0; i < model.Claims.Count; i++)
                 {
-                   var  testresult = await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Show", model.Claims[i].Show ? "true" : "false"));
-                    testresult = await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Add", model.Claims[i].Add ? "true" : "false"));
-                    testresult = await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Edit", model.Claims[i].Edit ? "true" : "false"));
-                    testresult = await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Delete", model.Claims[i].Delete ? "true" : "false"));
+                    await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Show", model.Claims[i].Show ? "true" : "false"));
+                    await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Add", model.Claims[i].Add ? "true" : "false"));
+                    await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Edit", model.Claims[i].Edit ? "true" : "false"));
+                    await roleManager.AddClaimAsync(role, new Claim(model.Claims[i].CliamType + "Delete", model.Claims[i].Delete ? "true" : "false"));
                 }
+                var users = userManager.Users.ToList();
+                for(int i = 0; i < users.Count; i++)
+                {
+                    if(await userManager.IsInRoleAsync(users[i] , role.Name))
+                    {
+                        var claims = await userManager.GetClaimsAsync(users[i]);
+                        for (int k = 0; k < claims.Count; k++)
+                        {
+                            await userManager.RemoveClaimAsync(users[i], new Claim(claims[k].Type, claims[k].Value));
+                        }
+                        var AddClaims = await roleManager.GetClaimsAsync(role);
+                        for (int k = 0; k < AddClaims.Count; k++)
+                        {
+                            await userManager.AddClaimAsync(users[i], new Claim(AddClaims[k].Type, AddClaims[k].Value));
+                        }
+                        //testresult = await roleManager.RemoveClaimAsync(role, new Claim(existClaims[i].Type + "", existClaims[i].Value));
 
+                    }
+                }
+                
+                
                 return RedirectToAction("Permissions");
             }
             else
@@ -311,6 +333,7 @@ namespace HumanResource.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "UsersAdd")]
         public IActionResult AddUser() 
         {
             var roles = roleManager.Roles.ToList();
@@ -331,7 +354,9 @@ namespace HumanResource.Controllers
             };
             return View( model);
         }
+        
         [HttpPost]
+        [Authorize(Policy = "UsersAdd")]
         public async Task<IActionResult> AddUser(AllRolesViewModel model)
         {
             if (ModelState.IsValid)
@@ -351,7 +376,12 @@ namespace HumanResource.Controllers
                         ModelState.AddModelError("", "Role is not exist");
                         return View( model);
                     }
-                    var test = await userManager.AddToRoleAsync(user, role.Name);
+                     await userManager.AddToRoleAsync(user, role.Name);
+                    var claims = await roleManager.GetClaimsAsync(role);
+                    for (int i = 0; i < claims.Count; i++)
+                    {
+                        await userManager.AddClaimAsync(user, new Claim(claims[i].Type, claims[i].Value));
+                    }
                     return RedirectToAction("Index");
                 }
                 
@@ -382,6 +412,7 @@ namespace HumanResource.Controllers
         }
         
         [HttpGet]
+        [Authorize(Policy = "UsersEdit")]
         public async Task<IActionResult> EditUser(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -420,7 +451,9 @@ namespace HumanResource.Controllers
             return View(model);
 
         }
+        
         [HttpPost]
+        [Authorize(Policy = "UsersEdit")]
         public async Task<IActionResult> EditUser(EditUserViewModel model , string UserId)
         {
             if (ModelState.IsValid)
@@ -448,10 +481,22 @@ namespace HumanResource.Controllers
                         {
                             if (await userManager.IsInRoleAsync(user, roles[i].Name))
                             {
+                                 var claims = await roleManager.GetClaimsAsync(roles[i]);
+                                for (int k = 0; k < claims.Count; k++)
+                                {
+                                    await userManager.RemoveClaimAsync(user, new Claim(claims[k].Type, claims[k].Value));
+                                }
                                 await userManager.RemoveFromRoleAsync(user, roles[i].Name);
+
                             }
                         }
+
                         result = await userManager.AddToRoleAsync(user, role.Name);
+                        var claimstouser = await roleManager.GetClaimsAsync(role);
+                        for (int k = 0; k < claimstouser.Count; k++)
+                        {
+                            await userManager.AddClaimAsync(user, new Claim(claimstouser[k].Type, claimstouser[k].Value));
+                        }
                         return RedirectToAction("Index");
 
                     }
@@ -492,6 +537,7 @@ namespace HumanResource.Controllers
         }
         
         [HttpPost]
+        [Authorize(Policy = "UsersDelete")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
@@ -499,6 +545,11 @@ namespace HumanResource.Controllers
             {
                 ViewBag.ErrorMessage = "User Not Found";
                 return View("NotFound");
+            }
+            var claims = await userManager.GetClaimsAsync(user);
+            for (int k = 0; k < claims.Count; k++)
+            {
+                await userManager.RemoveClaimAsync(user, new Claim(claims[k].Type, claims[k].Value));
             }
             var result = await userManager.DeleteAsync(user);
             if (result.Succeeded)

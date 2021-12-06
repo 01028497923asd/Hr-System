@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace HumanResource.Controllers
 {
+   
     [Authorize]
-    
     public class AccountingController : Controller
     {
         private readonly SignInManager<ApplicationUser> signInManager;
@@ -36,8 +36,9 @@ namespace HumanResource.Controllers
         {
             if (ModelState.IsValid)
             {
+                ApplicationUser signedUser = await userManager.FindByEmailAsync(model.Email);
                 var result = await signInManager.PasswordSignInAsync(
-                                   model.Email, model.Password, model.RememberMe,
+                                   signedUser.UserName, model.Password, model.RememberMe,
                                    false);
                 if (result.Succeeded)
                 {
@@ -48,9 +49,10 @@ namespace HumanResource.Controllers
                     else
                     {
                         return RedirectToAction("Index", "Home");
-                    }
-
                 }
+
+            }
+                
                 ModelState.AddModelError("", "Invalid Login Attemp");
 
             }

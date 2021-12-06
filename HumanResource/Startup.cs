@@ -1,5 +1,6 @@
 using HumanResource.Data;
 using HumanResource.Models;
+using HumanResource.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -56,23 +57,39 @@ namespace HumanResource
             services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme,
              options =>
              {
-
-
                  options.LoginPath = "/Accounting/Login";
                  options.LogoutPath = "/Accounting/Logout";
                  options.AccessDeniedPath = "/Accounting/AccessDenied";
                  options.SlidingExpiration = true;
                  options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
-
              });
-            services.AddAuthorization();
-            services.AddAuthorizationCore(option =>
-            {
-                option.AddPolicy("PermissionsAdd",
-                     policy => policy.RequireClaim("PermissionsAdd"));
+            services.AddAuthorizationCore(
+                options =>
+                {
+                    //options.AddPolicy("UsersEdit",
+                    //    policy => policy.RequireAssertion(
+                    //              context =>context.User.HasClaim());
+                    options.AddPolicy("UsersShow",
+                        policy => policy.RequireClaim("UsersShow", "true"));
+                    options.AddPolicy("UsersAdd",
+                        policy => policy.RequireClaim("UsersAdd", "true"));
+                    options.AddPolicy("UsersEdit",
+                        policy => policy.RequireClaim("UsersEdit", "true"));
+                    options.AddPolicy("UsersDelete",
+                        policy => policy.RequireClaim("UsersDelete", "true"));
+                    
+                    options.AddPolicy("PermissionsShow",
+                        policy => policy.RequireClaim("PermissionsShow", "true"));
+                    options.AddPolicy("PermissionsAdd",
+                        policy => policy.RequireClaim("PermissionsAdd", "true"));
+                    options.AddPolicy("PermissionsEdit",
+                        policy => policy.RequireClaim("PermissionsEdit", "true"));
+                    options.AddPolicy("PermissionsDelete",
+                        policy => policy.RequireClaim("PermissionsDelete", "true"));
 
+                });
 
-            });
+            services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherRoleAndClaims>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
