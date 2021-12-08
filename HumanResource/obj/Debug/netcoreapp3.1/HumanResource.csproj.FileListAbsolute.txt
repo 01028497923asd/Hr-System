@@ -175,3 +175,9 @@ D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\
 D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Employees\Index.cshtml.g.cs
 D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Employees\AddEmployee.cshtml.g.cs
 D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\HumanResource.csproj.AssemblyReference.cache
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\Employees\EditEmployee.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\TestEmployee\Create.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\TestEmployee\Delete.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\TestEmployee\Details.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\TestEmployee\Edit.cshtml.g.cs
+D:\Track\Sql Server\Project\HumanResource\HumanResource\obj\Debug\netcoreapp3.1\Razor\Views\TestEmployee\Index.cshtml.g.cs

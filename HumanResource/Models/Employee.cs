@@ -41,8 +41,7 @@ namespace HumanResource.Models
 
         [DataType(DataType.Date)]
         [Display(Name = "Date Of Birth")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
-               ApplyFormatInEditMode = true)]
+        
         [Required]
         [Minimum20Years]
         public DateTime DateOfBirth { get; set; }
@@ -54,8 +53,8 @@ namespace HumanResource.Models
         
         [Display(Name = "Date Of Contract")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
-               ApplyFormatInEditMode = true)]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
+        //       ApplyFormatInEditMode = true)]
         [Min2008Contract]
         [Required]
         public DateTime DateOfContract { get; set; }

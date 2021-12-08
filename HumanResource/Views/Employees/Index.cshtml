@@ -51,15 +51,14 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Id</th>
                                 <th>Phone</th>
-                                <th>Date of birth</th>
                                 <th>Type</th>
-                                <th>Start date</th>
+                                <th>Contract date</th>
                                 <th>Salary</th>
-                                <th>Attendance date</th>
-                                <th>check-out date</th>
                                 <th>Nationality</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -67,15 +66,30 @@
                             {
                                 <tr>
                                     <td>@item.Name</td>
-                                    <td>@item.SSN</td>
+                                    
                                     <td>@item.PhoneNumber</td>
-                                    <td>@item.DateOfBirth.Date.ToString("d")</td>
                                     <td>@item.EmployeeType</td>
                                     <td>@item.DateOfContract.Date.ToString("d")</td>
                                     <td>@item.Salary </td>
-                                    <td>@item.StartTime</td>
-                                    <th>@item.EndTime</th>
-                                    <th>@item.Nationality</th>
+                                    <td>@item.Nationality</td>
+                                    <td>
+                                        <a asp-action="EditEmployee" asp-controller="Employees" asp-route-ssn="@item.SSN"  class="btn btn-primary">Edit</a>
+                                        
+                                    </td>
+                                    <td>
+                                        <form method="post" asp-action="DeleteEmpoyee" asp-controller="Employees" asp-route-ssn="@item.SSN">
+                                            <span id="ConfirmDeleteSpan_@item.SSN" style="display:none">
+                                                <span>Are You sure You want to Delete</span>
+                                                <button type="submit" class="btn btn-danger mb-2">Yes</button>
+                                                <a href="#" class="btn btn-primary mb-2" onclick="ConfirmDelete('@item.SSN',false)">No</a>
+                                            </span>
+                                            <span id="DeleteSpan_@item.SSN">
+                                                <a href="#" class="btn btn-danger" onclick="ConfirmDelete('@item.SSN',true)">Delete</a>
+                                            </span>
+
+
+                                        </form>
+                                    </td>
                                 </tr>
                             }
 

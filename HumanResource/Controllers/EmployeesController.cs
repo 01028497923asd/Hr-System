@@ -29,10 +29,7 @@ namespace HumanResource.Controllers
         {
             Employee model = new Employee();
             model.Countries = new SelectList(GetCountries(),"Name","Name");
-            model.DateOfBirth = DateTime.Now;
-            model.DateOfContract = DateTime.Now;
-            
-            
+           
             return View(model);
         }
 
@@ -55,7 +52,49 @@ namespace HumanResource.Controllers
             
            
         }
-       
+        [HttpGet]
+        public IActionResult EditEmployee(string ssn)
+        {
+            var employee = context.Employees.FirstOrDefault(x => x.SSN == ssn);
+            if(employee == null)
+            {
+                return View("NotFound");
+            }
+            employee.Countries = new SelectList(GetCountries(), "Name", "Name");
+            return View(employee);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditEmployee(Employee employee)
+        {
+
+            if (ModelState.IsValid)
+            {
+                //var EmpInDb = await context.Employees.FindAsync(employee.SSN);
+                if(employee.SSN == null)
+                {
+                    return NotFound();
+                }
+                 context.Employees.Update(employee);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            employee.Countries = new SelectList(GetCountries(), "Name", "Name");
+            return View(employee);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteEmpoyee(string ssn)
+        {
+            var employee = await context.Employees.FindAsync(ssn);
+            if(employee == null)
+            {
+                return NotFound();
+            }
+             context.Employees.Remove(employee);
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
         public IEnumerable<Countries> GetCountries()
         {
             return CultureInfo.GetCultures(CultureTypes.SpecificCultures)
