@@ -1,6 +1,7 @@
 using HumanResource.Data;
 using HumanResource.Models;
 using HumanResource.Security;
+using HumanResource.Utilities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,8 +73,21 @@ namespace HumanResource
                     //              context =>context.User.HasClaim());
                     options.AddPolicy("UsersShow",
                         policy => policy.RequireClaim("UsersShow", "true"));
+
                     options.AddPolicy("UsersAdd",
                         policy => policy.RequireClaim("UsersAdd", "true"));
+
+
+
+
+
+
+
+
+
+
+
+
                     options.AddPolicy("UsersEdit",
                         policy => policy.RequireClaim("UsersEdit", "true"));
                     options.AddPolicy("UsersDelete",
@@ -90,6 +105,14 @@ namespace HumanResource
                 });
 
             services.AddSingleton<IAuthorizationHandler, CanEditOnlyOtherRoleAndClaims>();
+            //services.AddMvc()
+            //    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix,
+            //        opts => { opts.ResourcesPath = "Resources"; })
+            //    .AddDataAnnotationsLocalization(options =>
+            //    {
+            //        options.DataAnnotationLocalizerProvider = (type, factory) =>
+            //            factory.Create(typeof(Minimum20YearsAttribute)); // SharedResource is the class where the DataAnnotations (translations) will be stored.
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

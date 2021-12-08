@@ -1,0 +1,186 @@
+﻿@model HumanResource.Models.Employee
+
+@{
+    ViewData["Title"] = "AddEmployee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <h2 class="content-header">Add Employees Form</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title-wrap bar-success">
+                    <h4 class="card-title" id="horz-layout-basic">Employee Information</h4>
+                </div>
+                <p class="mb-0">This is the basic horizontal form with labels on left and cost estimation form is the default position.</p>
+            </div>
+            <div class="card-body">
+                <form asp-action="AddEmployee" class="form form-horizontal">
+                   <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="px-3">
+                        <div class="form-body">
+                            <h4 class="form-section">
+                                <i class="icon-user"></i> Personal Details
+                            </h4>
+                            <div class="form-group row">
+                                <label class="col-md-3 label-control">Full Name: </label>
+                                <div class="col-md-9">
+                                    <input asp-for="Name" class="form-control">
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 label-control">Address: </label>
+                                <div class="col-md-9">
+                                    <input asp-for="Address" class="form-control">
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 label-control">E-mail: </label>
+                                <div class="col-md-9">
+                                    <input asp-for="Email" class="form-control">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 label-control">Phone Number: </label>
+                                <div class="col-md-9">
+                                    <input asp-for="PhoneNumber" class="form-control">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <h4 class="form-section">
+                                <i class="icon-book-open"></i>Other Details
+                            </h4>
+                            <div class="form-group row">
+                                <label class="col-md-3 label-control">Date of Birth: </label>
+                                <div class="col-md-9">
+                                    <div class="position-relative has-icon-left">
+                                        <input asp-for="DateOfBirth" class="form-control">
+
+                                        <div class="form-control-position">
+                                            <i class="ft-message-square"></i>
+                                        </div>
+                                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Employee Type: </label>
+                            <div class="col-md-9">
+                                <select asp-for="EmployeeType" asp-items="Html.GetEnumSelectList<EmployeeType>()" class="form-control"></select>
+                                <span asp-validation-for="EmployeeType" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Date of contract: </label>
+                            <div class="col-md-9">
+                                <input asp-for="DateOfContract" class="form-control">
+                                <span asp-validation-for="DateOfContract" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class=" row">
+                            <div class="col-md-12">
+                                <div class=" row form-group">
+                                    <label class="col-md-3 label-control">Start time: </label>
+                                    <div class="position-relative has-icon-left col-lg-9">
+                                        <input asp-for="StartTime" class="form-control">
+                                        <div class="form-control-position">
+                                            <i class="ft-clock"></i>
+                                        </div>
+                                        <span asp-validation-for="StartTime" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class=" row form-group">
+                                    <label class="col-md-3 label-control">End time: </label>
+                                    <div class="position-relative has-icon-left col-lg-9">
+                                        <input asp-for="EndTime" class="form-control">
+                                        <div class="form-control-position">
+                                            <i class="ft-clock"></i>
+                                        </div>
+                                        <span asp-validation-for="EndTime" class="text-danger"></span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Salary: </label>
+                            <div class="col-md-9">
+                                <input asp-for="Salary" class="form-control">
+                                <span asp-validation-for="Salary" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">National ID: </label>
+                            <div class="col-md-9">
+                                <input asp-for="SSN" class="form-control">
+                                <span asp-validation-for="SSN" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 label-control">Nationality: </label>
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(x=>x.Nationality, Model.Countries  , new { @class = "form-control"})
+                                <span asp-validation-for="Nationality" class="text-danger"></span>
+                            </div>
+                        </div>
+                        @*<div class="form-group row">
+                                <label class="col-md-3 label-control">Select File: </label>
+                                <div class="col-md-9">
+                                    <label id="projectinput8" class="file center-block">
+                                        <input type="file" id="file">
+                                        <span class="file-custom"></span>
+                                        :
+                                    </label>
+                                </div>
+                            </div>*@
+                        @*<div class="form-group row">
+                                <label class="col-md-3 label-control" for="projectinput9">Notes: </label>
+                                <div class="col-md-9">
+                                    <textarea id="projectinput9" rows="5" class="form-control" name="comment"></textarea>
+                                </div>
+                            </div>*@
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-danger mr-1">
+                            <i class="icon-trash"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="icon-note"></i> Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

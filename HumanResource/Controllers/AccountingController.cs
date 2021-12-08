@@ -49,9 +49,9 @@ namespace HumanResource.Controllers
                     else
                     {
                         return RedirectToAction("Index", "Home");
-                }
+                    }
 
-            }
+                 }
                 
                 ModelState.AddModelError("", "Invalid Login Attemp");
 

@@ -55,6 +55,7 @@ namespace HumanResource.Controllers
        
         [HttpGet]
         [Authorize(Policy = "PermissionsShow")]
+        
         public IActionResult Permissions()
         {
             var roles = roleManager.Roles;
